@@ -47,6 +47,14 @@ public class DiscenteService {
     public DiscenteDTO delete(Integer id){
         Optional<Discente> discente = discenteRepository.findById(id);
         if(discente.isPresent()){
+            List<Corso> lCorso = discente.get().getListaCorsi();
+            for(int i = 0; i < lCorso.size(); i++){
+                lCorso.get(i).getIdCorso();
+                Optional <Corso> corso = corsoRepository.findById(lCorso.get(i).getIdCorso());
+                corso.get().getListaDiscenti().remove(discente.get());
+                corsoRepository.save(corso.get());
+            }
+            discente.get().getListaCorsi().clear();
             DiscenteDTO docenteDTO = DiscenteUtils.convertToDTO(discente.get());
             discenteRepository.deleteById(id);
             return docenteDTO;
@@ -78,12 +86,13 @@ public class DiscenteService {
         }
     }
 
+
     public DiscenteDTO discneteToCorso(Integer idCorso, Integer idDiscente){
         Optional <Corso> corso = corsoRepository.findById(idCorso);
         Optional <Discente> discente = discenteRepository.findById(idDiscente);
         if(corso.isPresent() && discente.isPresent()){
             corso.get().getListaDiscenti().add(discente.get());
-            if (discente.get().listaCorsi.contains(corso.get())){
+            if (discente.get().getListaCorsi().contains(corso.get())){
                 throw new EntityNotFoundException("Entità già presente nel databse");
             }else{
                 discente.get().getListaCorsi().add(corso.get());

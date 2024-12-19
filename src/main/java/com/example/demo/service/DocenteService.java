@@ -7,14 +7,19 @@ import com.example.demo.repository.DocenteRepository;
 import com.example.demo.utils.CorsoUtils;
 import com.example.demo.utils.DocenteConverter;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+
+
 @Service
 public class DocenteService {
+//    @Autowired
+//    DocenteRepository docenteRepository;
     private final DocenteRepository docenteRepository;
 
     public DocenteService(DocenteRepository docenteRepository) {

@@ -16,7 +16,7 @@ public class Discente {
     private int matricola ;
     private LocalDate dataNascita;
     @ManyToMany(mappedBy = "listaDiscenti")
-    public List<Corso> listaCorsi;
+    private List<Corso> listaCorsi;
 
     public List<Corso> getListaCorsi() {
         return listaCorsi;

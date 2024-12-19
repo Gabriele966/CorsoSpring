@@ -40,4 +40,9 @@ public class CorsoController {
         return corsoService.update(id, corsoDTO);
     }
 
+    @DeleteMapping("delete/{idDiscente}/to/{idCorso}")
+    public CorsoDTO deleteDiscenteToCorso(@PathVariable("idCorso") Integer idCorso, @PathVariable("idDiscente") Integer idDiscente) {
+        return corsoService.deleteDiscenteToCorso(idCorso, idDiscente);
+    }
+
 }

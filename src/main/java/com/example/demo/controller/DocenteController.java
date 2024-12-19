@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.DTO.DocenteDTO;
 import com.example.demo.entity.Docente;
 import com.example.demo.service.DocenteService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,6 +11,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/docente")
 public class DocenteController {
+
+//    @Autowired
+//    DocenteService docenteService;
+
     private final DocenteService docenteService;
 
     public DocenteController(DocenteService docenteService) {
