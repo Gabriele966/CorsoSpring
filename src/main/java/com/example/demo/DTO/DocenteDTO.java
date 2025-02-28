@@ -9,7 +9,7 @@ public class DocenteDTO {
     private Integer id;
     private String nome;
     private String cognome;
-    private List<CorsoDTO> listaCorsi;
+    private List<Integer> listaCorsi;
 
     public Integer getId() {return id;}
     public void setId(Integer id) {this.id = id;}
@@ -20,6 +20,6 @@ public class DocenteDTO {
     public String getCognome() {return cognome;}
     public void setCognome(String cognome) {this.cognome = cognome;}
 
-    public List<CorsoDTO> getListaCorsi() {return listaCorsi;}
-    public void setListaCorsi(List<CorsoDTO> listaCorsi) {this.listaCorsi = listaCorsi;}
+    public List<Integer> getListaCorsi() {return listaCorsi;}
+    public void setListaCorsi(List<Integer> listaCorsi) {this.listaCorsi = listaCorsi;}
 }

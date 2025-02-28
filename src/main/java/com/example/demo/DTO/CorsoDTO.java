@@ -1,10 +1,7 @@
 package com.example.demo.DTO;
 
-import com.example.demo.entity.Discente;
-import com.example.demo.entity.Docente;
-import jakarta.persistence.*;
-
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CorsoDTO {
@@ -13,14 +10,14 @@ public class CorsoDTO {
     private LocalDate dataInizio;
     private String durata;
     private DocenteDTO docente;
-    private List<DiscenteDTO> discente;
+    private List<Integer> listaDiscente = new ArrayList<>();
 
-    public List<DiscenteDTO> getDiscenteDTO() {
-        return discente;
+    public List<Integer> getListaDiscenteDTO() {
+        return listaDiscente;
     }
 
-    public void setDiscenteDTO(List<DiscenteDTO> discente) {
-        this.discente = discente;
+    public void setListaDiscenteDTO(List<Integer> discente) {
+        this.listaDiscente = discente;
     }
 
     public Integer getIdCorso() {

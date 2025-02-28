@@ -3,6 +3,7 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,8 +16,8 @@ public class Discente {
     private String cognome;
     private int matricola ;
     private LocalDate dataNascita;
-    @ManyToMany(mappedBy = "listaDiscenti")
-    private List<Corso> listaCorsi;
+    @ManyToMany(mappedBy = "listaDiscenti",  cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Corso> listaCorsi = new ArrayList<>();
 
     public List<Corso> getListaCorsi() {
         return listaCorsi;

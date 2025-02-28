@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @RequestMapping("/docente")
 public class DocenteController {
 
@@ -16,7 +17,6 @@ public class DocenteController {
 //    DocenteService docenteService;
 
     private final DocenteService docenteService;
-
     public DocenteController(DocenteService docenteService) {
         this.docenteService = docenteService;
     }
@@ -36,7 +36,7 @@ public class DocenteController {
         return docenteService.delete(id);
     }
 
-    @PostMapping("/getAll")
+    @GetMapping("/getAll")
     public List<DocenteDTO> getAllDocentes() {
         return docenteService.getAllDocentes();
     }

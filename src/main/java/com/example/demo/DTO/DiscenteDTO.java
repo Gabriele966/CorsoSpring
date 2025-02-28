@@ -1,8 +1,5 @@
 package com.example.demo.DTO;
 
-import com.example.demo.entity.Corso;
-import jakarta.persistence.ManyToMany;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +11,13 @@ public class DiscenteDTO {
     private String cognome;
     private Integer matricola ;
     private LocalDate dataNascita;
-    private List<CorsoDTO> corsi = new ArrayList<CorsoDTO>();
+    private List<Integer> corsi = new ArrayList<Integer>();
 
-    public List<CorsoDTO> getCorsiDTO() {
+    public List<Integer> getListaCorsiDTO() {
         return corsi;
     }
 
-    public void setCorsiDTO(List<CorsoDTO> corsi) {
+    public void setListaCorsiDTO(List<Integer> corsi) {
         this.corsi = corsi;
     }
 

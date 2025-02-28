@@ -1,15 +1,13 @@
 package com.example.demo.service;
 
 import com.example.demo.DTO.CorsoDTO;
-import com.example.demo.DTO.DiscenteDTO;
-import com.example.demo.DTO.DocenteDTO;
 import com.example.demo.entity.Corso;
 import com.example.demo.entity.Discente;
 import com.example.demo.repository.CorsoRepository;
 import com.example.demo.repository.DiscenteRepository;
-import com.example.demo.repository.DocenteRepository;
 import com.example.demo.utils.CorsoUtils;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,18 +15,20 @@ import java.util.List;
 import java.util.Optional;
 @Service
 public class CorsoService {
-    public final CorsoRepository corsoRepository;
-    public final DiscenteRepository discenteRepository;
+    private final CorsoRepository corsoRepository;
+    private final DiscenteRepository discenteRepository;
+    private final CorsoUtils corsoUtils;
 
-    public CorsoService(CorsoRepository corsoRepository, DiscenteRepository discenteRepository) {
+    private CorsoService(CorsoRepository corsoRepository, DiscenteRepository discenteRepository, CorsoUtils corsoUtils) {
         this.corsoRepository = corsoRepository;
         this.discenteRepository = discenteRepository;
+        this.corsoUtils = corsoUtils;
     }
 
     public CorsoDTO getCorsoById(Integer id) {
         Optional<Corso> corso = corsoRepository.findById(id);
         if (corso.isPresent()) {
-            CorsoDTO corsoDTO = CorsoUtils.corsotoDTO(corso.get());
+            CorsoDTO corsoDTO = corsoUtils.corsotoDTO(corso.get());
             return corsoDTO;
         }else{
             throw new EntityNotFoundException();
@@ -36,9 +36,9 @@ public class CorsoService {
     }
 
     public CorsoDTO insert(CorsoDTO corsoDTO) {
-        Corso corso = CorsoUtils.DTOToCorso(corsoDTO);
+        Corso corso = corsoUtils.DTOToCorso(corsoDTO);
         corso = corsoRepository.save(corso);
-        return CorsoUtils.corsotoDTO(corso);
+        return corsoUtils.corsotoDTO(corso);
     }
 
     public CorsoDTO delete(Integer id) {
@@ -50,7 +50,7 @@ public class CorsoService {
                 discente.get().getListaCorsi().remove(corso.get());
             }
             corso.get().getListaDiscenti().clear();
-            CorsoDTO corsoDTO = CorsoUtils.corsotoDTO(corso.get());
+            CorsoDTO corsoDTO = corsoUtils.corsotoDTO(corso.get());
             corsoRepository.deleteById(id);
             return corsoDTO;
         }else{
@@ -62,7 +62,7 @@ public class CorsoService {
         List<Corso> lCorso = corsoRepository.findAll();
         List<CorsoDTO> lCorsoDTO = new ArrayList<>();
         for (Corso corso : lCorso) {
-            CorsoDTO corsoDTO = CorsoUtils.corsotoDTO(corso);
+            CorsoDTO corsoDTO = corsoUtils.corsotoDTO(corso);
             lCorsoDTO.add(corsoDTO);
         }
         return lCorsoDTO;
@@ -72,9 +72,9 @@ public class CorsoService {
         Optional<Corso> corso = corsoRepository.findById(id);
         if(corso.isPresent()) {
             corsoDTO.setIdCorso(id);
-            Corso oCorso = CorsoUtils.DTOToCorso(corsoDTO);
+            Corso oCorso = corsoUtils.DTOToCorso(corsoDTO);
             corsoRepository.save(oCorso);
-            return CorsoUtils.corsotoDTO(corso.get());
+            return corsoUtils.corsotoDTO(corso.get());
         }else{
             throw new EntityNotFoundException();
         }
@@ -90,10 +90,26 @@ public class CorsoService {
                 corsoRepository.save(corso.get());
                 discenteRepository.save(discente.get());
             }
-            return CorsoUtils.corsotoDTO(corso.get());
+            return corsoUtils.corsotoDTO(corso.get());
         }else{
             throw new EntityNotFoundException();
         }
     }
+
+    public void  popolaClasse(Integer idCorso, Integer idDiscente){
+       Optional<Corso> corso = corsoRepository.findById(idCorso);
+       Optional<Discente> discente = discenteRepository.findById(idDiscente);
+       if(corso.isPresent() && discente.isPresent()){
+           corso.get().getListaDiscenti().add(discente.get());
+           discente.get().getListaCorsi().add(corso.get());
+           discenteRepository.save(discente.get());
+           corsoRepository.save(corso.get());
+       }else{
+           throw new EntityNotFoundException();
+       }
+    }
+
+
+
 
 }

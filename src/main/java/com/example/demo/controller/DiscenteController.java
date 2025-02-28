@@ -5,10 +5,10 @@ import com.example.demo.DTO.DiscenteDTO;
 import com.example.demo.entity.Discente;
 import com.example.demo.service.DiscenteService;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*")
 @RequestMapping("/discente")
 public class DiscenteController {
     private final DiscenteService discenteService;
@@ -18,7 +18,8 @@ public class DiscenteController {
     }
 
 
-    @GetMapping("/discenteById/{idDiscente}")
+
+    @GetMapping("/getDiscenteById/{idDiscente}")
     public DiscenteDTO getDiscenteById(@PathVariable ("idDiscente") Integer id) {
         return discenteService.getDiscnteById(id);
     }
@@ -44,11 +45,11 @@ public class DiscenteController {
         return discenteService.update(id, discenteDTO);
     }
 
-    @PostMapping("{idCorso}/insert/{idDiscente}")
+    /*@PostMapping("{idCorso}/insert/{idDiscente}")
     public DiscenteDTO discneteToCorso(@PathVariable("idCorso") Integer idCorso, @PathVariable("idDiscente") Integer idDiscnete){
         return discenteService.discneteToCorso(idCorso, idDiscnete);
     }
-
+*/
     
 
 }

@@ -19,19 +19,20 @@ import java.util.Optional;
 
 @Service
 public class DiscenteService {
-    public final DiscenteRepository discenteRepository;
-    public final CorsoRepository corsoRepository;
+    private final DiscenteRepository discenteRepository;
+    private final CorsoRepository corsoRepository;
+    private final DiscenteUtils discenteUtils;
 
-
-    public DiscenteService(DiscenteRepository discenteRepository, CorsoRepository corsoRepository) {
+    private DiscenteService(DiscenteRepository discenteRepository, CorsoRepository corsoRepository, DiscenteUtils discenteUtils) {
         this.discenteRepository = discenteRepository;
         this.corsoRepository = corsoRepository;
+        this.discenteUtils = discenteUtils;
     }
 
     public DiscenteDTO getDiscnteById(Integer id){
         Optional<Discente> discente = discenteRepository.findById(id);
         if(discente.isPresent()){
-            DiscenteDTO discenteDTO = DiscenteUtils.convertToDTO(discente.get());
+            DiscenteDTO discenteDTO = discenteUtils.convertToDTO(discente.get());
             return discenteDTO;
         }else{
             throw new EntityNotFoundException();
@@ -39,9 +40,9 @@ public class DiscenteService {
     }
 
     public DiscenteDTO insert(DiscenteDTO discenteDTO){
-        Discente discente = DiscenteUtils.convertToEntity(discenteDTO);
+        Discente discente = discenteUtils.convertToEntity(discenteDTO);
         Discente oDiscnete = discenteRepository.save(discente);
-        return DiscenteUtils.convertToDTO(oDiscnete);
+        return discenteUtils.convertToDTO(oDiscnete);
     }
 
     public DiscenteDTO delete(Integer id){
@@ -55,7 +56,7 @@ public class DiscenteService {
                 corsoRepository.save(corso.get());
             }
             discente.get().getListaCorsi().clear();
-            DiscenteDTO docenteDTO = DiscenteUtils.convertToDTO(discente.get());
+            DiscenteDTO docenteDTO = discenteUtils.convertToDTO(discente.get());
             discenteRepository.deleteById(id);
             return docenteDTO;
         }else{
@@ -67,7 +68,7 @@ public class DiscenteService {
         List<Discente> lDiscnete = discenteRepository.findAll();
         List<DiscenteDTO> lDiscenteDTO = new ArrayList<>();
         for(int i = 0; i<lDiscnete.size(); i++){
-            DiscenteDTO discenteDTO = DiscenteUtils.convertToDTO(lDiscnete.get(i));
+            DiscenteDTO discenteDTO = discenteUtils.convertToDTO(lDiscnete.get(i));
             lDiscenteDTO.add(discenteDTO);
         }
         return lDiscenteDTO;
@@ -78,16 +79,16 @@ public class DiscenteService {
         Optional<Discente> discente = discenteRepository.findById(id);
         if(discente.isPresent()){
             discenteDTO.setId(id);
-            Discente oDiscente = DiscenteUtils.convertToEntity(discenteDTO);
+            Discente oDiscente = discenteUtils.convertToEntity(discenteDTO);
             discenteRepository.save(oDiscente);
-            return DiscenteUtils.convertToDTO(oDiscente);
+            return discenteUtils.convertToDTO(oDiscente);
         }else{
             throw new EntityNotFoundException();
         }
     }
 
 
-    public DiscenteDTO discneteToCorso(Integer idCorso, Integer idDiscente){
+   /* public DiscenteDTO discneteToCorso(Integer idCorso, Integer idDiscente){
         Optional <Corso> corso = corsoRepository.findById(idCorso);
         Optional <Discente> discente = discenteRepository.findById(idDiscente);
         if(corso.isPresent() && discente.isPresent()){
@@ -98,12 +99,12 @@ public class DiscenteService {
                 discente.get().getListaCorsi().add(corso.get());
                 discenteRepository.save(discente.get());
                 corsoRepository.save(corso.get());
-                DiscenteDTO discenteDTO = DiscenteUtils.convertToDTOConCorso(discente.get(), corso.get());
+                DiscenteDTO discenteDTO = discenteUtils.convertToDTOConCorso(discente.get(), corso.get());
                 return discenteDTO;
             }
         }else{
             throw new EntityNotFoundException();
         }
-    }
+    }*/
 
 }

@@ -12,7 +12,7 @@ public class Docente {
     private Integer id;
     private String nome;
     private String cognome;
-    @OneToMany(mappedBy = "docente")
+    @OneToMany(mappedBy = "docente",  cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Corso> listaCorsi;
 
     public List<Corso> getListaCorsi() {return listaCorsi;}
